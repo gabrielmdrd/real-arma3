@@ -1,0 +1,33 @@
+html, body
+{
+    height: 100%;
+}
+#app
+{
+    height: 100%;
+}
+
+.bg {
+    /* The image used */
+    background: url('../img/global/background.jpg');
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.globalContent
+{
+    height: 75%;
+    color: black;
+    background:white ;
+}
+
+@font-face {
+    font-family: "Rockwell";
+    src: url("../font/rockwell/ROCK.TTF") format("ttf")
+}

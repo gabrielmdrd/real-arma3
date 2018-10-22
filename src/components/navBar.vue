@@ -1,5 +1,6 @@
 <template>
     <nav class="navBar">
+        <img class="mainLogo" src="../../src/assets/img/global/logo.png"/>
         <ul>
 
             <li v-for="navValue in navData">
@@ -22,7 +23,7 @@
                     },
                     {
                         page: "Magasin",
-                        page_url: '/Magasin'
+                        page_url: '/store'
                     },
                     {
                         page: "Contact",
@@ -31,6 +32,10 @@
                     {
                         page: "A propos",
                         page_url: '/about'
+                    },
+                    {
+                        page: "Administration",
+                        page_url: '/login'
                     }]
             }
         }

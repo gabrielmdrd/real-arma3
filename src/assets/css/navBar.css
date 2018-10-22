@@ -1,0 +1,32 @@
+.navBar
+{
+
+}
+
+.navBar ul
+{
+    width: 50%;
+    margin: auto;
+}
+.navBar li
+{
+    list-style-type: none;
+    width: 20%;
+    text-align: center;
+    display: inline-block;
+    line-height: 120px;
+    font-family: Rockwell;
+    font-size: 25px;
+    text-shadow: 1px 1px 2px black;
+}
+
+.navBar a
+{
+
+    color: white;
+}
+.mainLogo
+{
+   position: absolute;
+    left: 10px;
+}

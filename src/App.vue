@@ -11,6 +11,7 @@
           <div class="globalContent">
             <router-view></router-view>
           </div>
+
           <Footer/>
         </div>
       </div>
