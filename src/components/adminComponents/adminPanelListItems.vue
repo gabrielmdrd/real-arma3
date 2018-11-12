@@ -1,17 +1,12 @@
 <template>
     <div>
-    <b-table striped hover :items="items"></b-table>
+    <b-table striped hover :items="data" :fields="fields"></b-table>
     <h1>items</h1>
     </div>
 </template>
 
 <script>
-    const items = [
-        { isActive: true, age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        { isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        { isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-        { isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney' }
-    ];
+    import axios from '../../../node_modules/axios'
     export default {
 
         name: "admin-panel-list-items",
@@ -25,6 +20,7 @@
             axios.get('http://localhost:3000')
                 .then( (response) => {
                     this.data = response.data;
+                    console.log(this.data);
                 })
                 .catch(function (error){
                     console.log(error);

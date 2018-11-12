@@ -10,6 +10,9 @@
                 <p class="card_content">{{ item.content}}</p>
             </div>
         </div></b-col>
+        <b-pagination align="center" size="md"  @input="getPageNumber"  :total-rows="tRows" v-model="currentPage" :per-page="1">
+        </b-pagination>
+        <br>
     </div>
 </template>
 
@@ -21,7 +24,9 @@
         name: "store",
         data(){
             return {
-                data: []
+                data: [],
+                currentPage: 1,
+                tRows: 1
             }
         },
         mounted () {
@@ -32,6 +37,28 @@
               .catch(function (error){
                   console.log(error);
               })
+
+              axios.get('http://localhost:3000/len')
+                  .then( (response) => {
+                      this.tRows  = response.data.nbPages;
+                  })
+                  .catch(function (error){
+                      console.log(error);
+                  })
+        },
+        methods:{
+            getPageNumber()
+            {
+                axios.get('http://localhost:3000?nb='+this.currentPage)
+                    .then( (response) => {
+                        this.data = response.data;
+                        console.log(this.data);
+                    })
+                    .catch(function (error){
+                        console.log(error);
+                    })
+                console.log(this.currentPage);
+            }
         }
     }
 </script>
@@ -66,7 +93,7 @@
     {
         display: block;
         width: 100%;
-        height:180px;
+        height:160px;
     }
     .title
     {
