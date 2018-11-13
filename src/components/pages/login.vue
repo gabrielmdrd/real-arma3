@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import users from '../../users'
+    import axios from '../../../node_modules/axios'
     export default {
 
         name: "login",
@@ -33,11 +33,10 @@
         data() {
             return {
                 showDismissibleAlert: false,
-                users: users[1].login,
+                logged: "",
                 input: {
                     login: "",
-                    pwd:  "",
-                    log: ""
+                    pwd:  ""
                 }
             }
         },
@@ -50,18 +49,32 @@
                 }
                 else
                 {
-                    if(this.input.login === this.users)
-                    {
-                        this.input.log = "logged"
-                        this.$session.set('login', this.input.login)
-                        this.$router.push('/adminPanel')
+                    axios.post(`http://localhost:3000/auth`, {
+                        body: this.input
+                    })
+                        .then(response => {
+                            this.logged = response.data;
+                            if( response.data == 1)
+                            {
+                                this.$session.set('login', this.input.login);
+                                this.$router.push('/home');
 
-                    }
-                    else
-                    {
-                        this.input.log = "introuvable"
-                    }
-                    this.showDismissibleAlert = false
+                            }
+                            else if(response.data == 2)
+                            {
+                                this.$session.set('login', this.input.login);
+                                this.$session.set('admin', 1);
+                                this.$router.push('/adminPanel');
+                            }
+                            else
+                            {
+                                this.showDismissibleAlert = true
+                            }
+
+                        })
+                        .catch(e => {
+                            this.errors.push(e)
+                        })
                 }
             }
         }

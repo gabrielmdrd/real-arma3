@@ -7,7 +7,8 @@
                               type="text"
                                 v-model="postBody.title"/>
                 <label>Select image</label>
-                <b-form-file  @change="onFileSelected" placeholder="Selectionner une image"></b-form-file>
+                <!--<b-form-file  @change="onFileSelected" placeholder="Selectionner une image"></b-form-file>-->
+                <input type="file" enctype="multipart/form-data"  ref="file" @change="onFileSelected">
                 <label>Select file to download</label>
                 <b-form-file   placeholder="Selectionner un mode"></b-form-file>
                 <label>Description</label>
@@ -30,7 +31,7 @@
                     title: "",
                     content: "",
                     img_src : "navy_seals_1.jpg",
-                    uploadFile: null
+                    uploadFile: {}
                 },
                 selectedFile: null
             }
@@ -38,8 +39,11 @@
         methods: {
             postPost() {
                 const fd = new FormData();
-                fd.append('image', this.selectedFile, this.selectedFile.name);
-                this.uploadFile = fd;
+                fd.append('image', this.selectedFile);
+                this.postBody.uploadFile = fd;
+
+                console.log(this.postBody.uploadFile);
+
                 axios.post(`http://localhost:3000/post`, {
                     body: this.postBody
                 })
@@ -50,7 +54,7 @@
             },
             onFileSelected(event)
             {
-                this.selectedFile = event.target.files[0];
+                this.selectedFile = this.$refs.file.files[0];
                 console.log(this.selectedFile);
             }
         }

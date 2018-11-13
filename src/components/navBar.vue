@@ -34,6 +34,14 @@
                         page_url: '/about'
                     },
                     {
+                        page: "Deconnexion",
+                        page_url: '/logout'
+                    },
+                    {
+                        page: "Panier",
+                        page_url: '/logout'
+                    },
+                    {
                         page: "Administration",
                         page_url: '/login'
                     }]
