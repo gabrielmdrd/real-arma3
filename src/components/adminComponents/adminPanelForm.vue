@@ -50,8 +50,8 @@
                     .then(response => {})
                     .catch(e => {
                         this.errors.push(e)
-                    })
-            },
+                    });
+                      },
             onFileSelected(event)
             {
                 this.selectedFile = this.$refs.file.files[0];

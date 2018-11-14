@@ -20,7 +20,7 @@
 
         name: "admin-panel",
         beforeCreate: function () {
-            if (!this.$session.get('admin')) {
+            if (!this.$session.get('admin') == 1) {
                 this.$router.push('/home')
             }
         },

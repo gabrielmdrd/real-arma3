@@ -1,13 +1,14 @@
 <template>
     <nav class="navBar">
         <img class="mainLogo" src="../../src/assets/img/global/logo.png"/>
-        <ul>
-
-            <li v-for="navValue in navData">
-                <router-link :to="{ path: navValue.page_url }">{{ navValue.page }}</router-link>
+        <ul >
+            <li v-for="item in navData">
+                <router-link :to="item.page_url">{{item.page}}</router-link>
             </li>
         </ul>
+
     </nav>
+
 
 </template>
 
@@ -16,6 +17,7 @@
         name: "nav-bar",
         data(){
             return {
+                sessionStatus: this.$session.exists(),
                 navData: [
                     {
                         page: "Accueil",
@@ -33,18 +35,38 @@
                         page: "A propos",
                         page_url: '/about'
                     },
-                    {
-                        page: "Deconnexion",
-                        page_url: '/logout'
-                    },
+
                     {
                         page: "Panier",
-                        page_url: '/logout'
-                    },
-                    {
-                        page: "Administration",
-                        page_url: '/login'
+                        page_url: '/basket'
                     }]
+            }
+        },
+        computed: {
+          hide()
+          {
+              console.log("worked");
+          }
+        },
+        watch:{
+          '$route' (){
+              this.removeIfExists();
+          }
+        },
+        methods: {
+            removeIfExists()
+            {
+                if(this.$session.exists())
+                {
+                    this.navData.push({page: "Deconnexion", page_url: "/logout"});
+                }
+                else
+                {
+                    this.navData.push({page: "connexion", page_url: "/login"});
+
+                }
+                console.log(this.$session.exists());
+                //return this.navData;
             }
         }
     }

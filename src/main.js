@@ -14,7 +14,7 @@ Vue.use(VueSession);
 Vue.use(BootstrapVue);
 Vue.use(Paginate);
 Vue.config.productionTip = false;
-
+export const EventBus = new Vue();
 new Vue({
     router,
   render: h => h(App)

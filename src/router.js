@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import about from './components/pages/About.vue'
 import store from './components/pages/store.vue'
 import login from './components/pages/login.vue'
+import basket from './components/pages/basket.vue'
 import logout from './components/pages/logout.vue'
 import adminPanel from './components/pages/adminPanel.vue'
 import carousel from './components/carousel.vue'
@@ -35,6 +36,11 @@ export default new Router({
             path:'/logout',
             name: "deconnexion",
             component: logout
+        },
+        {
+            path:'/basket',
+            name: "baskeet",
+            component: basket
         },
     {
         path:'/adminPanel',

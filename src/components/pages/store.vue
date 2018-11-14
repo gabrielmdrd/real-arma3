@@ -1,11 +1,11 @@
 <template>
     <div class="iteam_card_container">
-        <b-col ><div  v-for="item in data" class="item_card">
+        <b-col ><div  v-for="(item, index) in data" class="item_card">
 
                 <img :src=" require(`@/assets/img/home/carousel/${item.img_src}`) " />
 
             <div>
-                <b-button class="card_btn" variant="primary" >Ajouter au panier</b-button>
+                <b-button class="card_btn" variant="primary" @click="addToBasket(index)">Ajouter au panier</b-button>
                 <p class="title">{{ item.title }}</p>
                 <p class="card_content">{{ item.content}}</p>
             </div>
@@ -58,6 +58,33 @@
                         console.log(error);
                     })
                 console.log(this.currentPage);
+            },
+            addToBasket(nbArticle)
+            {
+                if (this.$session.exists()) {
+
+                    var  basket = [];
+                    if(this.$session.has("basket"))
+                    {
+                        basket = this.$session.get("basket");
+                        console.log(basket);
+                    }
+                    else
+                    {
+                        basket = [];
+                    }
+
+                    basket.push({id: this.data[nbArticle].id,
+                        title: this.data[nbArticle].title
+                    });
+                    this.$session.set("basket", basket);
+                    console.log(this.$session.get('basket'));
+                }
+                else
+                {
+                    this.$router.push('/adminPanel')
+                }
+
             }
         }
     }

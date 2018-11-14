@@ -2,6 +2,7 @@
 </template>
 
 <script>
+    import { EventBus } from '../../main';
     export default {
         name: "logout",
         beforeCreate: function () {
