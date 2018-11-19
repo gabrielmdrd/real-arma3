@@ -5,7 +5,8 @@
 Mohand ABDELOUHAB & Gabriel MANDRAUD
 ```
 ## Structure du projet
-├── public/                 # Static files (see how to serve static files with Express)
+    .
+    ├── public/                 # Static files (see how to serve static files with Express)
     │   ├── as you like here
     │   └── index.html          # Main page
     ├── routes/
