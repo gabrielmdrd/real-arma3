@@ -2,14 +2,15 @@
     <div class="iteam_card_container">
         <b-col ><div  v-for="(item, index) in data" class="item_card">
 
-                <img :src=" require(`@/assets/img/home/carousel/${item.img_src}`) " />
-
+                <img :src=" require(`@/assets/img/store/${item.img_src}`) " />
             <div>
                 <b-button class="card_btn" variant="primary" @click="addToBasket(index)">Ajouter au panier</b-button>
                 <p class="title">{{ item.title }}</p>
                 <p class="card_content">{{ item.content}}</p>
             </div>
         </div></b-col>
+<b-alert variant="success"  :show="showOrNot">Votre article a bien été ajouté au panier</b-alert>
+<b-alert variant="danger"  :show="showOrNotAdd">Veuillez vous connecter pour ajouter des élements au panier</b-alert>
         <b-pagination align="center" size="md"  @input="getPageNumber"  :total-rows="tRows" v-model="currentPage" :per-page="1">
         </b-pagination>
         <br>
@@ -24,13 +25,16 @@
         name: "store",
         data(){
             return {
+		showOrNot: false,
+		showOrNotAdd: false,
                 data: [],
                 currentPage: 1,
                 tRows: 1
             }
         },
         mounted () {
-          axios.get('http://localhost:3000')
+		
+          axios.get('http://89.157.15.147:3000')
               .then( (response) => {
                   this.data = response.data;
               })
@@ -38,7 +42,7 @@
                   console.log(error);
               })
 
-              axios.get('http://localhost:3000/len')
+              axios.get('http://89.157.15.147:3000/len')
                   .then( (response) => {
                       this.tRows  = response.data.nbPages;
                   })
@@ -47,9 +51,10 @@
                   })
         },
         methods:{
+	
             getPageNumber()
             {
-                axios.get('http://localhost:3000?nb='+this.currentPage)
+                axios.get('http://89.157.15.147:3000?nb='+this.currentPage)
                     .then( (response) => {
                         this.data = response.data;
                         console.log(this.data);
@@ -61,6 +66,10 @@
             },
             addToBasket(nbArticle)
             {
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
                 if (this.$session.exists()) {
 
                     var  basket = [];
@@ -73,16 +82,25 @@
                     {
                         basket = [];
                     }
+			this.showOrNot = true;
+			sleep(2000).then(()=>{
+				this.showOrNot = false;	
+			});
+			
 
                     basket.push({id: this.data[nbArticle].id,
-                        title: this.data[nbArticle].title
+                        title: this.data[nbArticle].title,
+                        mod_src: this.data[nbArticle].mod_src
                     });
                     this.$session.set("basket", basket);
                     console.log(this.$session.get('basket'));
                 }
                 else
                 {
-                    this.$router.push('/adminPanel')
+                    this.showOrNotAdd = true;
+			sleep(3000).then(()=>{
+				this.showOrNotAdd = false;	
+			});
                 }
 
             }
@@ -91,6 +109,18 @@
 </script>
 
 <style scoped>
+	.customAlert
+	{
+		position: absolute;
+		top: 0;
+		width: 100%;
+		text-align: center;
+	
+	}
+.card_content
+{
+	height: 70px;
+}
     .iteam_card_container
     {
         height: 100%;

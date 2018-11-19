@@ -17,7 +17,7 @@
             }
         },
         mounted () {
-            axios.get('http://localhost:3000')
+            axios.get('http://89.157.15.147:3000')
                 .then( (response) => {
                     this.data = response.data;
                     console.log(this.data);

@@ -16,25 +16,25 @@
             <!-- Text slides with image -->
             <b-carousel-slide
                     id="slide"
-                    caption="First slide" t
-                    ext="Nulla vitae elit libero, a pharetra augue mollis interdum."
-                    img-src="https://picsum.photos/1024/480/?image=52"
+                    :caption="lastImgs[0].title"
+                    :text="lastImgs[0].content"
+                    :img-src="require(`@/assets/img/store/${lastImgs[0].img_src}`) "
             ></b-carousel-slide>
 
             <!-- Slides with custom text -->
             <b-carousel-slide
                     id="slide"
-                    caption="First slide"
-                    text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-                    img-src="https://picsum.photos/1024/480/?image=54">
+                    :caption="lastImgs[1].title"
+                    :text="lastImgs[1].content"
+                    :img-src="require(`@/assets/img/store/${lastImgs[1].img_src}`) ">
             </b-carousel-slide>
 
             <!-- Slides with image only -->
             <b-carousel-slide
                     id="slide"
-                    caption="First slide"
-                    text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-                    img-src="https://picsum.photos/1024/480/?image=58">
+                    :caption="lastImgs[2].title"
+                    :text="lastImgs[2].content"
+                    :img-src="require(`@/assets/img/store/${lastImgs[2].img_src}`) ">
             </b-carousel-slide>
         </b-carousel>
 
@@ -43,13 +43,25 @@
 </template>
 
 <script>
+    import axios from '../../node_modules/axios'
     export default {
         name: "carousel",
         data () {
             return {
                 slide: 0,
-                sliding: null
+                sliding: null,
+                lastImgs: []
             }
+        },
+        mounted() {
+            axios.get(`http://89.157.15.147:3000/getLastImgs`)
+            .then(response => {
+                this.lastImgs = response.data;
+                console.log(this.lastImgs);
+            })
+            .catch(e => {
+                this.errors.push(e)
+            });
         },
         methods: {
             onSlideStart (slide) {
@@ -65,10 +77,12 @@
     #pCarou
     {
         height: 100% !important;
+	
     }
     #carousel1
     {
         height: 100% !important;
+	background: red;
     }
 
     #slide

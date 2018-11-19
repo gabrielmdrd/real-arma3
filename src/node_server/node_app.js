@@ -1,10 +1,15 @@
 const fs = require('fs');
 const express = require('express');
+const multer = require('multer');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 var session = require('express-session');
+const admZip = require("adm-zip");
 const app = express();
 
+const upload = multer({
+    dest: '../../src/assets/img/store/'
+});
 
 
 app.use(bodyParser.json());
@@ -68,13 +73,42 @@ app.get('/len', function(req, res){
 
 });
 
+app.post('/upload', upload.single("file"),  function(req, res)
+{
+    fs.renameSync('../../src/assets/img/store/'+req.file.filename,'../../src/assets/img/store/'+req.file.originalname);
+
+    config = fs.readFileSync('../data.json', 'utf8');
+    config = JSON.parse(config.toString());
+    config[config.length - 1].img_src = req.file.originalname;
+    fs.writeFileSync('../data.json', JSON.stringify(config));
+});
+
+app.post('/uploadMod', upload.single("mod"),  function(req, res)
+{
+    fs.renameSync('../../src/assets/img/store/'+req.file.filename,'../../src/assets/mods/'+req.file.originalname);
+
+    config = fs.readFileSync('../data.json', 'utf8');
+    config = JSON.parse(config.toString());
+    config[config.length - 1].mod_src = req.file.originalname;
+
+    if(config[config.length - 1].mod_src === "") {
+    }
+    else
+    {
+        fs.writeFileSync('../data.json', JSON.stringify(config));
+    }
+});
+
 app.post('/post', function(req, res){
     config = fs.readFileSync('../data.json', 'utf8');
-
     config = JSON.parse(config.toString());
+    let last_id = config[config.length - 1].id;
+    req.body.body.id = last_id + 1;
     config.push(req.body.body);
-    fs.writeFileSync('../data.json', JSON.stringify(config));
+
     console.log(req.body.body);
+    fs.writeFileSync('../data.json', JSON.stringify(config));
+
 });
 
 app.post('/auth',function(req, res){
@@ -109,6 +143,37 @@ app.post('/auth',function(req, res){
     }
 
 });
+
+app.get('/getLastImgs', function(req, res){ //pour alimenter la carousel
+    config = fs.readFileSync('../data.json', 'utf8');
+    config = JSON.parse(config.toString());
+
+    let len = config.length;
+    lastImgs = [config[len - 1],
+                config[len - 2],
+                config[len - 3]];
+
+    console.log(lastImgs);
+
+    res.send(lastImgs);
+});
+
+app.get('/download', function(req, res){
+    const modPath = "../../src/assets/mods/";
+    const cheminzip = "../../src/assets/mods/att.zip";
+
+
+    let zip = new admZip();
+
+    Object.entries(req.query).forEach(entry => {
+        zip.addLocalFile(modPath+entry[1]);
+    });
+    zip.writeZip('../../src/assets/mods/att.zip');
+    res.download(cheminzip);
+
+    console.log(req.query);
+});
+
 
 app.listen(3000, function(){
     console.log('en écoute');

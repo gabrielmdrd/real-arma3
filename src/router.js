@@ -19,7 +19,7 @@ export default new Router({
         component: about
     },
     {
-        path:'/home',
+        path:'/',
         name: "home",
         component: carousel
     },

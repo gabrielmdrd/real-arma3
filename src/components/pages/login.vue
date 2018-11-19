@@ -5,23 +5,29 @@
                 <label>Login</label>
                 <b-form-input id="login"
                               type="text"
-                              v-model="input.login"/>
+                              v-model="input.login"
+				placeholder="Entrer votre identifiant"/>
                 <label>Mot de passe</label>
                 <b-form-input id="pwd"
                               type="password"
                               v-model="input.pwd"
-                              placeholder="Enter email"/>
+                              placeholder="Entrer votre mot de passe"/>
                 <b-btn type="submit" variant="primary">Connexion</b-btn>
             </b-form-group>
         </b-form>
         <b-alert variant="danger" :show="showDismissibleAlert">les champs sont vides</b-alert>
         <p>{{ input.log }}</p>
+	<b-alert variant="success" :show="showCoAdm">Vous êtes connecté en tant qu'administrateur</b-alert>
+	 <b-alert variant="success" :show="showCoUser">Vous êtes connecté</b-alert>
+	<b-alert variant="danger" :show="showAuthFail">Veuillez vérifier votre saisie</b-alert>
     </div>
 
 </template>
 
 <script>
     import axios from '../../../node_modules/axios'
+    import {navBar} from "../../store";
+
     export default {
 
         name: "login",
@@ -32,6 +38,9 @@
         },
         data() {
             return {
+		showCoAdm: false,
+		showCoUser: false,
+		showAuthFail: true,
                 showDismissibleAlert: false,
                 logged: "",
                 input: {
@@ -43,32 +52,67 @@
         methods: {
             auth()
             {
+		const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
                 if(this.input.login === "" || this.input.pwd === "")
                 {
                     this.showDismissibleAlert = true
                 }
                 else
                 {
-                    axios.post(`http://localhost:3000/auth`, {
+                    axios.post(`http://89.157.15.147:3000/auth`, {
                         body: this.input
                     })
                         .then(response => {
                             this.logged = response.data;
                             if( response.data == 1)
                             {
+				sleep(2000).then(() => {
+					  this.showCoUser = true;
+				})
+	
                                 this.$session.set('login', this.input.login);
-                                this.$router.push('/home');
+                                for(let i = 0;i < navBar.navData.length;i++)
+                                {
+                                    if(navBar.navData[i].page === "Connexion")
+                                    {
+                                        navBar.navData.splice(i,1);
+                                        navBar.navData.push({
+                                            page: "Deconnexion",
+                                            page_url: '/logout'
+                                        });
+                                    }
+                                }
+                                this.$router.push('/store');
 
                             }
                             else if(response.data == 2)
                             {
+				sleep(2000).then(() => {
+					  this.showCoAdm = true;
+				})
                                 this.$session.set('login', this.input.login);
                                 this.$session.set('admin', 1);
+                                for(let i = 0;i < navBar.navData.length;i++)
+                                {
+                                    if(navBar.navData[i].page === "Connexion")
+                                    {
+                                        navBar.navData.splice(i,3);
+                                        navBar.navData.push({
+                                            page: "Deconnexion",
+                                            page_url: '/logout'
+                                        }, {
+                                                page: "Administration",
+                                                page_url: '/login'
+                                        });
+                                    }
+                                }
                                 this.$router.push('/adminPanel');
                             }
                             else
                             {
-                                this.showDismissibleAlert = true
+                                this.showAuthFail = true;
                             }
 
                         })

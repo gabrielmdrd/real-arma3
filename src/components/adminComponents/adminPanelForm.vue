@@ -6,11 +6,10 @@
                 <b-form-input id="title"
                               type="text"
                                 v-model="postBody.title"/>
-                <label>Select image</label>
-                <!--<b-form-file  @change="onFileSelected" placeholder="Selectionner une image"></b-form-file>-->
-                <input type="file" enctype="multipart/form-data"  ref="file" @change="onFileSelected">
-                <label>Select file to download</label>
-                <b-form-file   placeholder="Selectionner un mode"></b-form-file>
+                <label>Selectionner une image</label>
+                <b-form-file   @change="onFileSelected($event.target.files)" placeholder="Selectionner une image"></b-form-file>
+                <label>Selectionner un mode</label>
+                <b-form-file   @change="onFileSelectedMod($event.target.files)" placeholder="Selectionner un mode"></b-form-file>
                 <label>Description</label>
                 <b-form-input id="title"
                               type="text"
@@ -28,34 +27,50 @@
         data(){
             return {
                 postBody:  {
+                    id: 0,
                     title: "",
                     content: "",
                     img_src : "navy_seals_1.jpg",
-                    uploadFile: {}
+                    mod_src: "navy_seals_1.jpg"
                 },
-                selectedFile: null
+                uploadFile: new FormData(),
+                uploadMod: new FormData()
             }
         },
         methods: {
             postPost() {
-                const fd = new FormData();
-                fd.append('image', this.selectedFile);
-                this.postBody.uploadFile = fd;
+	
 
-                console.log(this.postBody.uploadFile);
-
-                axios.post(`http://localhost:3000/post`, {
+                axios.post(`http://89.157.15.147:3000/post`, {
                     body: this.postBody
                 })
                     .then(response => {})
                     .catch(e => {
                         this.errors.push(e)
                     });
+
+                axios.post(`http://89.157.15.147:3000/upload`, this.uploadFile)
+                    .then(response => {})
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+               axios.post(`http://89.157.15.147:3000/uploadMod`, this.uploadMod)
+                    .then(response => {})
+                    .catch(e => {
+                        this.errors.push(e)
+                    });
+
                       },
-            onFileSelected(event)
+            onFileSelected(fileList)
             {
-                this.selectedFile = this.$refs.file.files[0];
-                console.log(this.selectedFile);
+                this.uploadFile.append("file", fileList[0], fileList[0].name);
+                console.log(fileList[0]);
+            },
+            onFileSelectedMod(fileList)
+            {
+
+                this.uploadMod.append("mod", fileList[0], fileList[0].name);
+                console.log(fileList[0]);
             }
         }
     }
