@@ -6,12 +6,12 @@ Mohand ABDELOUHAB & Gabriel MANDRAUD
 ```
 ## Structure du projet
     .
-    ├── public/                 # Static files (see how to serve static files with Express)
+    ├── public/     
     │   ├── as you like here
-    │   └── index.html          # Main page
+    │   └── index.html         
     ├── routes/
-    │   └── index.js            # Your routes (backend)
-    ├── MEMBERS.txt             # See submission requirements
+    │   └── index.js           
+    ├── MEMBERS.txt          
     ├── package.json           
-    ├── REPORT.pdf              # See submission requirements
-    └── app.js               # Node.js application entry point
+    ├── REPORT.pdf              
+    └── app.js            
