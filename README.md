@@ -7,7 +7,9 @@ Mohand ABDELOUHAB & Gabriel MANDRAUD
 ## Structure du projet
     .
     ├── public/     
-    │   ├── as you like here
+    │   ├── data.json
+    │   ├── favicon.ico
+    │   ├── logo.png
     │   └── index.html         
     ├── routes/
     │   └── index.js           
