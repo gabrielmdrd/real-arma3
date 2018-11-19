@@ -3,6 +3,7 @@
     <div v-if="this.$session.exists()">
         <ul v-for="item in this.basket" class="itemContainer">
             <li>{{ item.title }}
+            	<span class="quan">       Quantité : 1</span>
                 <b-button variant="danger" class="vBtn" @click="removeFromBasket(item.id)">Retirer</b-button>
             </li>
         </ul>
@@ -16,7 +17,12 @@
 	<h1>Votre panier est vide</h1>
 </div>
 <div v-else>
-	<b-button variant="primary" @click="checkOut()">Valider</b-button>
+	<p>Nombre total d'articles : {{this.basket.length}}</p>
+	<b-button :disabled="showDisable" variant="primary" @click="checkOut()">Valider le panier & Télécharger les articles</b-button>
+</div>
+<div v-if="showLoader">
+<img class="imgLoader" :show="false"src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif" >
+<p>Vos articles sont en cours de téléchargement. Veuillez patienter...</p>
 </div>
 </div>
 
@@ -28,6 +34,8 @@
         name: "basket",
         data(){
             return {
+		showLoader: false,
+		showDisable: false,
                 basket: this.$session.get('basket'),
             }
         },
@@ -43,6 +51,8 @@
             },
 
             checkOut() {
+		this.showLoader = true;
+		this.showDisable = true;
                 let str = "";
                 for(let i = 0;i < this.basket.length;i++)
                 {
@@ -63,9 +73,12 @@
                         'Content-Type': 'application/zip',
                     }})
                     .then((response) => {
+			
                         let blob = new Blob([response.data], { type: "application/zip" }),
                             url = window.URL.createObjectURL(blob);
                         window.open(url, "_self");
+			this.showLoader = false;
+			this.showDisable = false;
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -76,9 +89,20 @@
 </script>
 
 <style scoped>
+.quan
+{
+	margin-left: 150px;
+}
+
+.imgLoader
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
 .vBtn
 {
-	align: right;
+	margin-left: 40%;
 }
     ul
     {
@@ -88,9 +112,11 @@
 {
     width: 100%;
     height: 40px;
-    background: lightgrey;
+    background: #F0F0F0;
     color: white;
-	height: 40px;
+	height: 100px;
+	box-shadow: 0px 0px 5px #252525;
+	line-height: 100px;
 }
 
 .itemContainer li

@@ -17,9 +17,8 @@
         </b-form>
         <b-alert variant="danger" :show="showDismissibleAlert">les champs sont vides</b-alert>
         <p>{{ input.log }}</p>
-	<b-alert variant="success" :show="showCoAdm">Vous êtes connecté en tant qu'administrateur</b-alert>
-	 <b-alert variant="success" :show="showCoUser">Vous êtes connecté</b-alert>
-	<b-alert variant="danger" :show="showAuthFail">Veuillez vérifier votre saisie</b-alert>
+	<b-alert variant="success" :show="showCoAdm">Vous êtes connecté en tant qu'administrateur.</b-alert>
+	 <b-alert variant="success" :show="showCoUser">Vous êtes connecté en tant qu'utilisateur.</b-alert>
     </div>
 
 </template>
@@ -27,6 +26,7 @@
 <script>
     import axios from '../../../node_modules/axios'
     import {navBar} from "../../store";
+	import {bus} from "../../main";
 
     export default {
 

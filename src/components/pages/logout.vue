@@ -17,14 +17,14 @@
                         page_url: '/login'
                     });
                 }
-                /*else if(navBar.navData[i].page === "Administration")
+                else if(navBar.navData[i].page === "Administration")
                 {
                     navBar.navData.splice(i,2);
                     navBar.navData.push({
                         page: "Connexion",
                         page_url: '/login'
                     });
-                }*/
+                }
             }
             this.$router.push('/')
         },

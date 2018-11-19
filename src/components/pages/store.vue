@@ -9,8 +9,8 @@
                 <p class="card_content">{{ item.content}}</p>
             </div>
         </div></b-col>
-<b-alert variant="success"  :show="showOrNot">Votre article a bien été ajouté au panier</b-alert>
-<b-alert variant="danger"  :show="showOrNotAdd">Veuillez vous connecter pour ajouter des élements au panier</b-alert>
+<b-alert variant="success"  :show="showOrNot">L'article a bien été ajouté au panier.</b-alert>
+<b-alert variant="danger"  :show="showOrNotAdd">Veuillez vous connecter pour ajouter des éléments au panier.</b-alert>
         <b-pagination align="center" size="md"  @input="getPageNumber"  :total-rows="tRows" v-model="currentPage" :per-page="1">
         </b-pagination>
         <br>

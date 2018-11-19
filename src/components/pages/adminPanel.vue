@@ -37,7 +37,7 @@
                         component: "item"
                     },
                     {
-                        page: "Lister les items",
+                        page: "Lister les articles",
                         component: "listItems"
                     }
                 ]
